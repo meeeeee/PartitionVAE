@@ -38,6 +38,7 @@ for epoch in range(epochs):
         train.set_postfix(loss='{:.6f}'.format(epoch_train_losses.avg))
         train.update(1)
   model.eval()
+  epoch_train_losses.reset()
   with torch.no_grad():
     with tqdm(total=len(test_loader),ncols=90) as test:
       test.set_description('Test Epoch:  {}/{}'.format(epoch,epochs-1))
@@ -49,6 +50,7 @@ for epoch in range(epochs):
         epoch_test_losses.update(loss.item(), len(batch))
         test.set_postfix(loss='{:.6f}'.format(epoch_test_losses.avg))
         test.update(1)
+  epoch_test_losses.reset()
 
 torch.save(model, "PVAE.pth")
 model.eval()
